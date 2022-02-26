@@ -1,29 +1,33 @@
-ENCRYPTION_CYCLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+import sys
 
-def main(arg1, arg2, arg3: str) -> str:
-    k = int(arg3)  # сдвиг на число k
-    if (arg1 == "e"):
-        list_e = list(arg2)  #преобразование строки шифрования в список
-        for i in range(0, len(arg2)):
-            for j in range(0, len(ENCRYPTION_CYCLE)):
-                if list_e[i] == ENCRYPTION_CYCLE[j]: 
-                    list_e[i] = ENCRYPTION_CYCLE[(j+k) % len(ENCRYPTION_CYCLE)]  #вычисление смещения шифрования
-                    break
-        print("".join(list_e))
-    elif(arg1 == "d"):
-        list_d = list(arg2)  # преобразование строки дешифрования в список
-        for i in range(0, len(arg2)):
-            for j in range(0, len(ENCRYPTION_CYCLE)):
-                if list_d[i] == ENCRYPTION_CYCLE[j]:
-                    list_d[i] = ENCRYPTION_CYCLE[(j - k) % len(ENCRYPTION_CYCLE)]
-                    break
-        print("".join(list_d))
+ENCRYPTION_CYCLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
+
+pseudo_sys_argv_1 = list(["e", "ABC", "1"])
+pseudo_sys_argv_2 = list(["e", "ABCrererDFSF879", "61"])
+pseudo_sys_argv_3 = list(["d", "Khoor zruog", "3"])
+
+
+def chiffre(e_d: str, shift: int) -> None:
+    result = []
+    for i in range(0, len(e_d)):
+        for j in range(0, len(ENCRYPTION_CYCLE)):
+            if e_d[i] == ENCRYPTION_CYCLE[j]:
+                result.append(ENCRYPTION_CYCLE[(j + shift) % len(ENCRYPTION_CYCLE)])
+                break
+    print("".join(result))
+
+
+def main(pseudo_sys_argv: list) -> None:
+    key = int(pseudo_sys_argv[2])
+    if "e" == pseudo_sys_argv[0]:
+        chiffre(pseudo_sys_argv[1], key)
+    elif pseudo_sys_argv[0] == "d":
+        chiffre(pseudo_sys_argv[1], -key)
     else:
-        print("Invalid argument. Use 'e' or 'd'")
-        sys.exit(-1)
+        sys.exit("Invalid argument. Use 'e' or 'd'")
 
 
 if __name__ == '__main__':
-    main("e", "ABC", "1")
-    main("e", "ABCrererDFSF879", "61")
-    main("d", "Khoor, zruog", "3")
+    main(pseudo_sys_argv_1)
+    main(pseudo_sys_argv_2)
+    main(pseudo_sys_argv_3)
